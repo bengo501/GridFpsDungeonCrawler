@@ -1,2 +1,6 @@
 res://managers/UIManager.gd
 res://scenes/ui/GameOver.gd
+res://scenes/Battle.gd
+res://scenes/Exploration.gd
+res://scenes/Grid.gd
+res://scenes/Player.gd
