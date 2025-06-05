@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/Interaction.gd" id="1_8u9vx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InteractionHUD.tscn" id="2_9v0wx"]
+
+[node name="Interaction" type="Node"]
+script = ExtResource("1_8u9vx")
+
+[node name="UIContainer" type="CanvasLayer" parent="."]
+
+[node name="InteractionHUD" parent="UIContainer" instance=ExtResource("2_9v0wx")] 

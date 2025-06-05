@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cexgs0tktmvk6"]
+
+[ext_resource type="Script" path="res://scenes/World.gd" id="1_1k4m3"]
+[ext_resource type="PackedScene" uid="uid://e4q6y4n2x1m3p" path="res://scenes/ui/ExplorationHUD.tscn" id="2_2k4m3"]
+[ext_resource type="PackedScene" uid="uid://f4q6y4n2x1m3p" path="res://scenes/ui/BattleHUD.tscn" id="3_3k4m3"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_1k4m3")
+
+[node name="Grid" type="Node3D" parent="."]
+
+[node name="Player" type="Node3D" parent="."]
+
+[node name="UIContainer" type="CanvasLayer" parent="."]
+
+[node name="ExplorationHUD" parent="UIContainer" instance=ExtResource("2_2k4m3")]
+
+[node name="BattleHUD" parent="UIContainer" instance=ExtResource("3_3k4m3")]
+visible = false 

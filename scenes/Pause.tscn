@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/Pause.gd" id="1_7u8vx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/Pause.tscn" id="2_8v9wx"]
+
+[node name="Pause" type="Node"]
+script = ExtResource("1_7u8vx")
+
+[node name="UIContainer" type="CanvasLayer" parent="."]
+
+[node name="Pause" parent="UIContainer" instance=ExtResource("2_8v9wx")] 

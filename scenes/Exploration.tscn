@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/Exploration.gd" id="1_0u1vx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ExplorationHUD.tscn" id="2_1v2wx"]
+
+[node name="Exploration" type="Node3D"]
+script = ExtResource("1_0u1vx")
+
+[node name="Grid" type="Node3D" parent="."]
+
+[node name="Player" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.6, 0)
+
+[node name="UIContainer" type="CanvasLayer" parent="."]
+
+[node name="ExplorationHUD" parent="UIContainer" instance=ExtResource("2_1v2wx")] 

@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://c8q6y4n2x1m3p"]
+
+[ext_resource type="Script" path="res://Grid.gd" id="1_3k4m3"]
+[ext_resource type="PackedScene" uid="uid://b6x8v0j6y5n3q" path="res://Player.tscn" id="2_4k5m3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.2, 0.2, 0.2, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1"]
+size = Vector3(2, 4, 2)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2"]
+albedo_color = Color(0.4, 0.4, 0.4, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+size = Vector3(2, 0.1, 2)
+material = SubResource("StandardMaterial3D_2")
+
+[sub_resource type="Environment" id="Environment_1"]
+ambient_light_color = Color(0.2, 0.2, 0.2, 1.0)
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Main" type="Node3D"]
+
+[node name="Grid" type="Node3D" parent="."]
+script = ExtResource("1_3k4m3")
+
+[node name="Player" parent="." instance=ExtResource("2_4k5m3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 10, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="WallMesh" type="MeshInstance3D" parent="Grid"]
+mesh = SubResource("BoxMesh_1")
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Grid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+mesh = SubResource("BoxMesh_2") 

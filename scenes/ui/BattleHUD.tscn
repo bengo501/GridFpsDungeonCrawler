@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=3 uid="uid://f4q6y4n2x1m3p"]
+
+[ext_resource type="Script" path="res://scenes/ui/BattleHUD.gd" id="1_7k4m3"]
+
+[node name="BattleHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7k4m3")
+
+[node name="PlayerStats" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 120.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="HealthBar" type="ProgressBar" parent="PlayerStats"]
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="PlayerStats/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Vida: 100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyStats" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 140.0
+offset_right = -20.0
+offset_bottom = 240.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="EnemyName" type="Label" parent="EnemyStats"]
+layout_mode = 2
+text = "Inimigo"
+horizontal_alignment = 1
+
+[node name="HealthBar" type="ProgressBar" parent="EnemyStats"]
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="EnemyStats/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Vida: 100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BattleMenu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -200.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="AttackButton" type="Button" parent="BattleMenu"]
+layout_mode = 2
+text = "Atacar"
+
+[node name="SkillButton" type="Button" parent="BattleMenu"]
+layout_mode = 2
+text = "Habilidade"
+
+[node name="ItemButton" type="Button" parent="BattleMenu"]
+layout_mode = 2
+text = "Item"
+
+[node name="FleeButton" type="Button" parent="BattleMenu"]
+layout_mode = 2
+text = "Fugir"
+
+[node name="BattleLog" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -300.0
+offset_right = -220.0
+offset_bottom = -220.0
+grow_horizontal = 0
+grow_vertical = 0
+bbcode_enabled = true
+scroll_following = true 

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/Grid.gd" id="1_1u2vx"]
+
+[node name="Grid" type="Node3D"]
+script = ExtResource("1_1u2vx")
+
+[node name="Cells" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="Doors" type="Node3D" parent="."]
+
+[node name="Interactables" type="Node3D" parent="."] 
