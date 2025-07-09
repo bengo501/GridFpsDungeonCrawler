@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://g4q6y4n2x1m3p"]
+[gd_scene load_steps=2 format=3 uid="uid://dadce2qtetrcx"]
 
-[ext_resource type="Script" path="res://scenes/ui/DialogHUD.gd" id="1_8k4m3"]
+[ext_resource type="Script" uid="uid://b6ndilvvmviy5" path="res://scenes/ui/DialogHUD.gd" id="1_8k4m3"]
 
 [node name="DialogHUD" type="Control"]
 layout_mode = 3
@@ -60,4 +60,4 @@ offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Pressione ESPAÇO para continuar"
-horizontal_alignment = 1 
+horizontal_alignment = 1

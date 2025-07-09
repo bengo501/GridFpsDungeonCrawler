@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://d4q6y4n2x1m3p"]
+[gd_scene load_steps=2 format=3 uid="uid://dce2qtetrcx"]
 
-[ext_resource type="Script" path="res://scenes/ui/SaveSelect.gd" id="1_5k4m3"]
+[ext_resource type="Script" uid="uid://basg8oy06et2x" path="res://scenes/ui/SaveSelect.gd" id="1_5k4m3"]
 
 [node name="SaveSelect" type="Control"]
 layout_mode = 3
@@ -73,4 +73,4 @@ text = "Deletar"
 [node name="BackButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Voltar" 
+text = "Voltar"

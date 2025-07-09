@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://bseki4xeh5ujs"]
 
-[ext_resource type="Script" path="res://scenes/Cutscene.gd" id="1_3u4vx"]
-[ext_resource type="PackedScene" path="res://scenes/ui/DialogHUD.tscn" id="2_4v5wx"]
+[ext_resource type="Script" uid="uid://boq2hs1s5d7jp" path="res://scenes/Cutscene.gd" id="1_3u4vx"]
+[ext_resource type="PackedScene" uid="uid://dadce2qtetrcx" path="res://scenes/ui/DialogHUD.tscn" id="2_4v5wx"]
 
 [node name="Cutscene" type="Node3D"]
 script = ExtResource("1_3u4vx")
@@ -10,4 +10,4 @@ script = ExtResource("1_3u4vx")
 
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
-[node name="DialogHUD" parent="UIContainer" instance=ExtResource("2_4v5wx")] 
+[node name="DialogHUD" parent="UIContainer" instance=ExtResource("2_4v5wx")]

@@ -11,6 +11,8 @@ var save_data: Dictionary = {
     "player": {
         "health": 100.0,
         "max_health": 100.0,
+        "mp": 50.0,
+        "max_mp": 50.0,
         "position": Vector3.ZERO,
         "inventory": [],
         "skills": [],
@@ -27,14 +29,14 @@ var save_data: Dictionary = {
         "solved_puzzles": []
     },
     "settings": {
-        "game_difficulty": 1,
-        "music_volume": 1.0,
-        "sfx_volume": 1.0,
-        "master_volume": 1.0
+        "difficulty": 1,
+        "volume": 1.0
     },
     "metadata": {
+        "save_name": "",
         "save_date": "",
-        "play_time": 0.0,
+        "date_created": "",
+        "play_time": "00:00",
         "version": "1.0"
     }
 }
@@ -47,14 +49,56 @@ func _ready():
     if not DirAccess.dir_exists_absolute(save_directory):
         DirAccess.make_dir_absolute(save_directory)
 
-func create_save(save_id: String) -> bool:
+func get_save_list() -> Array:
+    var saves = []
+    var dir = DirAccess.open(save_directory)
+    
+    if dir:
+        dir.list_dir_begin()
+        var file_name = dir.get_next()
+        
+        while file_name != "":
+            if file_name.ends_with(".save"):
+                var save_info = get_save_info(file_name.get_basename())
+                if save_info:
+                    saves.append(save_info)
+            file_name = dir.get_next()
+    
+    return saves
+
+func get_save_info(save_id: String) -> Dictionary:
+    var save_path = save_directory + save_id + ".save"
+    
+    if not FileAccess.file_exists(save_path):
+        return {}
+    
+    var save_file = FileAccess.open(save_path, FileAccess.READ)
+    if save_file == null:
+        return {}
+    
+    var data = save_file.get_var()
+    save_file.close()
+    
+    return {
+        "id": save_id,
+        "save_name": data.metadata.get("save_name", "Save " + save_id),
+        "date_created": data.metadata.get("date_created", ""),
+        "play_time": data.metadata.get("play_time", "00:00"),
+        "level": data.player.get("level", 1)
+    }
+
+func create_save(save_name: String) -> bool:
+    var save_id = "save_" + str(Time.get_unix_time_from_system())
     current_save_id = save_id
     
     # Atualiza os dados do save com as informações atuais do jogo
     update_save_data()
     
     # Adiciona metadados
+    save_data.metadata.save_name = save_name
     save_data.metadata.save_date = Time.get_datetime_string_from_system()
+    save_data.metadata.date_created = Time.get_datetime_string_from_system()
+    save_data.metadata.play_time = format_time(0) # TODO: implementar tempo de jogo
     
     # Salva o arquivo
     var save_path = save_directory + save_id + ".save"
@@ -65,10 +109,20 @@ func create_save(save_id: String) -> bool:
         return false
     
     save_file.store_var(save_data)
+    save_file.close()
     save_created.emit(save_id)
     return true
 
-func load_save(save_id: String) -> bool:
+func load_save(save_index: int) -> bool:
+    var saves = get_save_list()
+    if save_index < 0 or save_index >= saves.size():
+        save_error.emit("Índice de save inválido")
+        return false
+    
+    var save_info = saves[save_index]
+    return load_save_by_id(save_info.id)
+
+func load_save_by_id(save_id: String) -> bool:
     current_save_id = save_id
     var save_path = save_directory + save_id + ".save"
     
@@ -82,12 +136,19 @@ func load_save(save_id: String) -> bool:
         return false
     
     save_data = save_file.get_var()
+    save_file.close()
     apply_save_data()
     save_loaded.emit(save_id)
     return true
 
-func delete_save(save_id: String) -> bool:
-    var save_path = save_directory + save_id + ".save"
+func delete_save(save_index: int) -> bool:
+    var saves = get_save_list()
+    if save_index < 0 or save_index >= saves.size():
+        save_error.emit("Índice de save inválido")
+        return false
+    
+    var save_info = saves[save_index]
+    var save_path = save_directory + save_info.id + ".save"
     
     if not FileAccess.file_exists(save_path):
         save_error.emit("Arquivo de save não encontrado")
@@ -98,29 +159,20 @@ func delete_save(save_id: String) -> bool:
         save_error.emit("Erro ao deletar arquivo de save")
         return false
     
-    save_deleted.emit(save_id)
+    save_deleted.emit(save_info.id)
     return true
 
-func get_save_list() -> Array:
-    var saves = []
-    var dir = DirAccess.open(save_directory)
-    
-    if dir:
-        dir.list_dir_begin()
-        var file_name = dir.get_next()
-        
-        while file_name != "":
-            if file_name.ends_with(".save"):
-                saves.append(file_name.get_basename())
-            file_name = dir.get_next()
-    
-    return saves
+func format_time(seconds: int) -> String:
+    var minutes = seconds / 60
+    var remaining_seconds = seconds % 60
+    return "%02d:%02d" % [minutes, remaining_seconds]
 
 func update_save_data():
     # Atualiza dados do jogador
     save_data.player.health = GameManager.player_health
     save_data.player.max_health = GameManager.player_max_health
-    save_data.player.position = GameManager.player_position
+    save_data.player.mp = GameManager.player_mp
+    save_data.player.max_mp = GameManager.player_max_mp
     save_data.player.inventory = GameManager.player_inventory
     save_data.player.skills = GameManager.player_skills
     save_data.player.level = GameManager.player_level
@@ -136,16 +188,15 @@ func update_save_data():
     save_data.world.solved_puzzles = GameManager.solved_puzzles
     
     # Atualiza configurações
-    save_data.settings.game_difficulty = GameManager.game_difficulty
-    save_data.settings.music_volume = GameManager.music_volume
-    save_data.settings.sfx_volume = GameManager.sfx_volume
-    save_data.settings.master_volume = GameManager.master_volume
+    save_data.settings.difficulty = GameManager.difficulty
+    save_data.settings.volume = GameManager.volume
 
 func apply_save_data():
     # Aplica dados do jogador
     GameManager.player_health = save_data.player.health
     GameManager.player_max_health = save_data.player.max_health
-    GameManager.player_position = save_data.player.position
+    GameManager.player_mp = save_data.player.get("mp", 50.0)
+    GameManager.player_max_mp = save_data.player.get("max_mp", 50.0)
     GameManager.player_inventory = save_data.player.inventory
     GameManager.player_skills = save_data.player.skills
     GameManager.player_level = save_data.player.level
@@ -161,7 +212,12 @@ func apply_save_data():
     GameManager.solved_puzzles = save_data.world.solved_puzzles
     
     # Aplica configurações
-    GameManager.game_difficulty = save_data.settings.game_difficulty
-    GameManager.music_volume = save_data.settings.music_volume
-    GameManager.sfx_volume = save_data.settings.sfx_volume
-    GameManager.master_volume = save_data.settings.master_volume 
+    GameManager.difficulty = save_data.settings.get("difficulty", 1)
+    GameManager.volume = save_data.settings.get("volume", 1.0)
+    
+    # Emitir sinais de atualização
+    GameManager.health_changed.emit(GameManager.player_health, GameManager.player_max_health)
+    GameManager.mp_changed.emit(GameManager.player_mp, GameManager.player_max_mp)
+    GameManager.experience_changed.emit(GameManager.player_experience, GameManager.get_experience_to_next_level())
+    GameManager.gold_changed.emit(GameManager.player_gold)
+    GameManager.level_changed.emit(GameManager.player_level) 

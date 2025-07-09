@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://i4q6y4n2x1m3p"]
+[gd_scene load_steps=2 format=3 uid="uid://bexgs0tktmvk6"]
 
-[ext_resource type="Script" path="res://scenes/ui/GameOver.gd" id="1_0k4m3"]
+[ext_resource type="Script" uid="uid://bo54xrvl0cuvk" path="res://scenes/ui/GameOver.gd" id="1_0k4m3"]
 
 [node name="GameOver" type="Control"]
 layout_mode = 3
@@ -71,4 +71,4 @@ text = "Tentar Novamente"
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "Menu Principal" 
+text = "Menu Principal"

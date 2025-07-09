@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://dgcx1a7o3td7p"]
 
-[ext_resource type="Script" path="res://scenes/Dialog.gd" id="1_9u0vx"]
-[ext_resource type="PackedScene" path="res://scenes/ui/DialogHUD.tscn" id="2_0v1wx"]
+[ext_resource type="Script" uid="uid://bvotomwn811pu" path="res://scenes/Dialog.gd" id="1_9u0vx"]
+[ext_resource type="PackedScene" uid="uid://dadce2qtetrcx" path="res://scenes/ui/DialogHUD.tscn" id="2_0v1wx"]
 
 [node name="Dialog" type="Node"]
 script = ExtResource("1_9u0vx")
 
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
-[node name="DialogHUD" parent="UIContainer" instance=ExtResource("2_0v1wx")] 
+[node name="DialogHUD" parent="UIContainer" instance=ExtResource("2_0v1wx")]

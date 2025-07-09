@@ -1,11 +1,26 @@
 extends Control
 
 func _ready():
-	# Conectar sinais dos botões
-	$VBoxContainer/ResumeButton.pressed.connect(_on_resume_pressed)
-	$VBoxContainer/SaveButton.pressed.connect(_on_save_pressed)
-	$VBoxContainer/OptionsButton.pressed.connect(_on_options_pressed)
-	$VBoxContainer/MainMenuButton.pressed.connect(_on_main_menu_pressed)
+	# Aguarda um frame para garantir que todos os nós estejam prontos
+	await get_tree().process_frame
+	
+	# Conectar sinais com verificações de segurança
+	var resume_button = get_node_or_null("VBoxContainer/ResumeButton")
+	var save_button = get_node_or_null("VBoxContainer/SaveButton")
+	var options_button = get_node_or_null("VBoxContainer/OptionsButton")
+	var main_menu_button = get_node_or_null("VBoxContainer/MainMenuButton")
+	
+	if resume_button:
+		resume_button.pressed.connect(_on_resume_pressed)
+	
+	if save_button:
+		save_button.pressed.connect(_on_save_pressed)
+	
+	if options_button:
+		options_button.pressed.connect(_on_options_pressed)
+	
+	if main_menu_button:
+		main_menu_button.pressed.connect(_on_main_menu_pressed)
 	
 	# Esconder o menu inicialmente
 	hide()

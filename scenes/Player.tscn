@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://mvnyikbinlod"]
 
-[ext_resource type="Script" path="res://scenes/Player.gd" id="1_2u3vx"]
+[ext_resource type="Script" uid="uid://cacgn0jpqqr12" path="res://scenes/Player.gd" id="1_2u3vx"]
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_2u3vx")
@@ -9,4 +9,4 @@ script = ExtResource("1_2u3vx")
 
 [node name="Weapon" type="Node3D" parent="Model"]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."] 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

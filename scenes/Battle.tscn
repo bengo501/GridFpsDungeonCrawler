@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://jjk7xwcaf0tf"]
 
-[ext_resource type="Script" path="res://scenes/Battle.gd" id="1_3k4m3"]
-[ext_resource type="PackedScene" uid="uid://f4q6y4n2x1m3p" path="res://scenes/ui/BattleHUD.tscn" id="2_3k4m3"]
+[ext_resource type="Script" uid="uid://drk7tg1yb3pnv" path="res://scenes/Battle.gd" id="1_3k4m3"]
+[ext_resource type="PackedScene" uid="uid://cadce2qtetrcx" path="res://scenes/ui/BattleHUD.tscn" id="2_3k4m3"]
 
 [node name="Battle" type="Node3D"]
 script = ExtResource("1_3k4m3")
@@ -12,4 +12,4 @@ script = ExtResource("1_3k4m3")
 
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
-[node name="BattleHUD" parent="UIContainer" instance=ExtResource("2_3k4m3")] 
+[node name="BattleHUD" parent="UIContainer" instance=ExtResource("2_3k4m3")]

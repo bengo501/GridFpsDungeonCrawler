@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c4q6y4n2x1m3p"]
 
-[ext_resource type="Script" path="res://scenes/ui/Options.gd" id="1_4k4m3"]
+[ext_resource type="Script" uid="uid://b4rsul12cc61d" path="res://scenes/ui/Options.gd" id="1_4k4m3"]
 
 [node name="Options" type="Control"]
 layout_mode = 3
@@ -74,4 +74,4 @@ layout_mode = 2
 
 [node name="BackButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "Voltar" 
+text = "Voltar"

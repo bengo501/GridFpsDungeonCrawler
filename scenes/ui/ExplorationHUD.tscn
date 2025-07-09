@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://e4q6y4n2x1m3p"]
+[gd_scene load_steps=2 format=3 uid="uid://badce2qtetrcx"]
 
-[ext_resource type="Script" path="res://scenes/ui/ExplorationHUD.gd" id="1_6k4m3"]
+[ext_resource type="Script" uid="uid://djsavv52a3u7a" path="res://scenes/ui/ExplorationHUD.gd" id="1_6k4m3"]
 
 [node name="ExplorationHUD" type="Control"]
 layout_mode = 3
@@ -102,4 +102,4 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Pressione E para interagir"
 horizontal_alignment = 1
-vertical_alignment = 1 
+vertical_alignment = 1

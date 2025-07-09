@@ -6,27 +6,40 @@ signal option_selected(option_index: int)
 var current_options = []
 
 func _ready():
-	# Conectar sinais dos botões
-	$InteractionPanel/VBoxContainer/CloseButton.pressed.connect(_on_close_pressed)
+	# Aguarda um frame para garantir que todos os nós estejam prontos
+	await get_tree().process_frame
+	
+	# Conectar sinais com verificações de segurança
+	var close_button = get_node_or_null("InteractionPanel/VBoxContainer/CloseButton")
+	if close_button:
+		close_button.pressed.connect(_on_close_pressed)
 	
 	# Esconder o HUD inicialmente
 	hide()
 
 func show_interaction(title: String, description: String, options: Array):
-	$InteractionPanel/VBoxContainer/Title.text = title
-	$InteractionPanel/VBoxContainer/Description.text = description
+	var title_label = get_node_or_null("InteractionPanel/VBoxContainer/Title")
+	var description_label = get_node_or_null("InteractionPanel/VBoxContainer/Description")
+	var options_container = get_node_or_null("InteractionPanel/VBoxContainer/Options")
 	
-	# Limpar opções anteriores
-	for child in $InteractionPanel/VBoxContainer/Options.get_children():
-		child.queue_free()
+	if title_label:
+		title_label.text = title
 	
-	# Adicionar novas opções
-	current_options = options
-	for i in range(options.size()):
-		var button = Button.new()
-		button.text = options[i]
-		button.pressed.connect(_on_option_pressed.bind(i))
-		$InteractionPanel/VBoxContainer/Options.add_child(button)
+	if description_label:
+		description_label.text = description
+	
+	if options_container:
+		# Limpar opções anteriores
+		for child in options_container.get_children():
+			child.queue_free()
+		
+		# Adicionar novas opções
+		current_options = options
+		for i in range(options.size()):
+			var button = Button.new()
+			button.text = options[i]
+			button.pressed.connect(_on_option_pressed.bind(i))
+			options_container.add_child(button)
 	
 	show()
 

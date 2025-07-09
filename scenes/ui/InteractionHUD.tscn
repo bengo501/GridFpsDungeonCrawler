@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://h4q6y4n2x1m3p"]
+[gd_scene load_steps=2 format=3 uid="uid://exgs0tktmvk6"]
 
-[ext_resource type="Script" path="res://scenes/ui/InteractionHUD.gd" id="1_9k4m3"]
+[ext_resource type="Script" uid="uid://m7bmvysvjud5" path="res://scenes/ui/InteractionHUD.gd" id="1_9k4m3"]
 
 [node name="InteractionHUD" type="Control"]
 layout_mode = 3
@@ -64,4 +64,4 @@ text = "Opção 3"
 
 [node name="CloseButton" type="Button" parent="InteractionPanel/VBoxContainer"]
 layout_mode = 2
-text = "Fechar" 
+text = "Fechar"

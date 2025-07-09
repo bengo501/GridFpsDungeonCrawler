@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://f4q6y4n2x1m3p"]
+[gd_scene load_steps=2 format=3 uid="uid://cadce2qtetrcx"]
 
-[ext_resource type="Script" path="res://scenes/ui/BattleHUD.gd" id="1_7k4m3"]
+[ext_resource type="Script" uid="uid://canxlrhykxbkw" path="res://scenes/ui/BattleHUD.gd" id="1_7k4m3"]
 
 [node name="BattleHUD" type="Control"]
 layout_mode = 3
@@ -119,4 +119,4 @@ offset_bottom = -220.0
 grow_horizontal = 0
 grow_vertical = 0
 bbcode_enabled = true
-scroll_following = true 
+scroll_following = true

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b4q6y4n2x1m3p"]
 
-[ext_resource type="Script" path="res://scenes/ui/Pause.gd" id="1_3k4m3"]
+[ext_resource type="Script" uid="uid://dwkoh7na8fwc3" path="res://scenes/ui/Pause.gd" id="1_3k4m3"]
 
 [node name="Pause" type="Control"]
 layout_mode = 3
@@ -55,4 +55,4 @@ text = "Opções"
 
 [node name="MainMenuButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-text = "Menu Principal" 
+text = "Menu Principal"

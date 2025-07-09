@@ -1,18 +1,35 @@
 extends Control
 
 func _ready():
-	# Conectar sinais dos botões
-	$VBoxContainer/RetryButton.pressed.connect(_on_retry_pressed)
-	$VBoxContainer/MainMenuButton.pressed.connect(_on_main_menu_pressed)
+	# Aguarda um frame para garantir que todos os nós estejam prontos
+	await get_tree().process_frame
+	
+	# Conectar sinais com verificações de segurança
+	var retry_button = get_node_or_null("VBoxContainer/RetryButton")
+	var main_menu_button = get_node_or_null("VBoxContainer/MainMenuButton")
+	
+	if retry_button:
+		retry_button.pressed.connect(_on_retry_pressed)
+	
+	if main_menu_button:
+		main_menu_button.pressed.connect(_on_main_menu_pressed)
 	
 	# Esconder o menu inicialmente
 	hide()
 
 func show_game_over():
-	# Atualizar estatísticas
-	$VBoxContainer/LevelLabel.text = "Nível alcançado: %d" % GameManager.player_level
-	$VBoxContainer/TimeLabel.text = "Tempo de jogo: %s" % _format_time(GameManager.play_time)
-	$VBoxContainer/EnemiesLabel.text = "Inimigos derrotados: %d" % GameManager.defeated_enemies.size()
+	var level_label = get_node_or_null("VBoxContainer/LevelLabel")
+	var time_label = get_node_or_null("VBoxContainer/TimeLabel")
+	var enemies_label = get_node_or_null("VBoxContainer/EnemiesLabel")
+	
+	if level_label and GameManager:
+		level_label.text = "Nível alcançado: %d" % GameManager.player_level
+	
+	if time_label and GameManager:
+		time_label.text = "Tempo de jogo: %s" % _format_time(GameManager.play_time)
+	
+	if enemies_label and GameManager:
+		enemies_label.text = "Inimigos derrotados: %d" % GameManager.defeated_enemies.size()
 	
 	show()
 

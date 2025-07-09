@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://kfn53dj5dpe3"]
 
-[ext_resource type="Script" path="res://scenes/SaveSelect.gd" id="1_6u7vx"]
-[ext_resource type="PackedScene" path="res://scenes/ui/SaveSelect.tscn" id="2_7v8wx"]
+[ext_resource type="Script" uid="uid://b867v8201r3ed" path="res://scenes/SaveSelect.gd" id="1_6u7vx"]
+[ext_resource type="PackedScene" uid="uid://dce2qtetrcx" path="res://scenes/ui/SaveSelect.tscn" id="2_7v8wx"]
 
 [node name="SaveSelect" type="Node"]
 script = ExtResource("1_6u7vx")
 
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
-[node name="SaveSelect" parent="UIContainer" instance=ExtResource("2_7v8wx")] 
+[node name="SaveSelect" parent="UIContainer" instance=ExtResource("2_7v8wx")]

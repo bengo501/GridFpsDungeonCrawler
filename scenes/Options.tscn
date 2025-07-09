@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://s3plrjv007dx"]
 
-[ext_resource type="Script" path="res://scenes/Options.gd" id="1_5u6vx"]
-[ext_resource type="PackedScene" path="res://scenes/ui/Options.tscn" id="2_6v7wx"]
+[ext_resource type="Script" uid="uid://gogwkhke2or5" path="res://scenes/Options.gd" id="1_5u6vx"]
+[ext_resource type="PackedScene" uid="uid://c4q6y4n2x1m3p" path="res://scenes/ui/Options.tscn" id="2_6v7wx"]
 
 [node name="Options" type="Node"]
 script = ExtResource("1_5u6vx")
 
 [node name="UIContainer" type="CanvasLayer" parent="."]
 
-[node name="Options" parent="UIContainer" instance=ExtResource("2_6v7wx")] 
+[node name="Options" parent="UIContainer" instance=ExtResource("2_6v7wx")]
