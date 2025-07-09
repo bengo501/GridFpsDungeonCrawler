@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://c8q6y4n2x1m3p"]
 
-[ext_resource type="Script" uid="uid://c7vpy4gj4tqxf" path="res://Grid.gd" id="1_3k4m3"]
+[ext_resource type="Script" uid="uid://0mm3ft20x7t6" path="res://scenes/Grid.gd" id="1_3k4m3"]
 [ext_resource type="PackedScene" uid="uid://b6x8v0j6y5n3q" path="res://Player.tscn" id="2_4k5m3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]

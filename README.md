@@ -37,8 +37,12 @@ Um jogo de RPG em primeira pessoa com movimento baseado em grid, desenvolvido em
 - Sistema de diálogo interativo
 
 ### Controles
-- **WASD/Setas**: Movimento
-- **Q/E**: Rotação
+- **W/Seta para cima**: Mover para frente (direção que o jogador está olhando)
+- **S/Seta para baixo**: Mover para trás (direção oposta)
+- **A/Seta para esquerda**: Mover para a esquerda (relativo à direção do jogador)
+- **D/Seta para direita**: Mover para a direita (relativo à direção do jogador)
+- **Q**: Girar para a esquerda
+- **E**: Girar para a direita
 - **F**: Interagir
 - **ESC**: Pausar
 - **Enter**: Confirmar diálogos
@@ -86,11 +90,12 @@ Um jogo de RPG em primeira pessoa com movimento baseado em grid, desenvolvido em
 
 ## Como Jogar
 
-1. **Exploração**: Use WASD para se mover pelo mundo em grid
-2. **Interação**: Pressione F próximo a objetos para interagir
-3. **Batalha**: Quando encontrar inimigos, escolha entre atacar, usar habilidades, itens ou fugir
-4. **Progressão**: Derrote inimigos para ganhar experiência e subir de nível
-5. **Save**: Use o menu de pausa para salvar seu progresso
+1. **Exploração**: Use WASD/setas para se mover pelo mundo em grid baseado na direção que você está olhando
+2. **Rotação**: Use Q/E para girar à esquerda/direita
+3. **Interação**: Pressione F próximo a objetos para interagir
+4. **Batalha**: Quando encontrar inimigos, escolha entre atacar, usar habilidades, itens ou fugir
+5. **Progressão**: Derrote inimigos para ganhar experiência e subir de nível
+6. **Save**: Use o menu de pausa para salvar seu progresso
 
 ## Desenvolvimento
 

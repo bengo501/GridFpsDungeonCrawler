@@ -14,6 +14,8 @@ var current_direction: Vector3 = Vector3.FORWARD
 func _ready():
 	target_position = global_position
 	target_rotation = rotation.y
+	# Inicializar a direção atual baseada na rotação inicial
+	update_current_direction()
 
 func _physics_process(delta):
 	handle_movement(delta)
@@ -24,20 +26,26 @@ func handle_input():
 	if is_moving or is_turning:
 		return
 	
-	# Movimento
+	# Movimento baseado na direção que o jogador está olhando
 	if Input.is_action_just_pressed("move_forward"):
+		# W ou seta para cima - move para frente (direção que está olhando)
 		move_in_direction(current_direction)
 	elif Input.is_action_just_pressed("move_backward"):
+		# S ou seta para baixo - move para trás (direção oposta)
 		move_in_direction(-current_direction)
 	elif Input.is_action_just_pressed("move_left"):
-		move_in_direction(-transform.basis.x)
+		# A ou seta para esquerda - move para a esquerda relativa
+		move_in_direction(get_left_direction())
 	elif Input.is_action_just_pressed("move_right"):
-		move_in_direction(transform.basis.x)
+		# D ou seta para direita - move para a direita relativa
+		move_in_direction(get_right_direction())
 	
 	# Rotação
 	elif Input.is_action_just_pressed("turn_left"):
+		# Q - girar para a esquerda
 		turn(-90)
 	elif Input.is_action_just_pressed("turn_right"):
+		# E - girar para a direita
 		turn(90)
 	
 	# Interação
@@ -46,7 +54,24 @@ func handle_input():
 	
 	# Pausa
 	elif Input.is_action_just_pressed("pause"):
-		GameStateManager.change_state(GameStateManager.GameState.PAUSE_MENU)
+		GameStateManager.change_state(GameStateManager.GameState.PAUSED)
+
+func get_left_direction() -> Vector3:
+	# Calcula a direção à esquerda baseada na direção atual
+	# Rotaciona a direção atual 90 graus para a esquerda
+	var left_direction = Vector3(-current_direction.z, 0, current_direction.x)
+	return left_direction.normalized()
+
+func get_right_direction() -> Vector3:
+	# Calcula a direção à direita baseada na direção atual
+	# Rotaciona a direção atual 90 graus para a direita
+	var right_direction = Vector3(current_direction.z, 0, -current_direction.x)
+	return right_direction.normalized()
+
+func update_current_direction():
+	# Atualiza a direção atual baseada na rotação Y
+	var angle_rad = rotation.y
+	current_direction = Vector3(sin(angle_rad), 0, cos(angle_rad)).normalized()
 
 func move_in_direction(direction: Vector3):
 	var new_position = global_position + direction * grid_size
@@ -56,23 +81,41 @@ func move_in_direction(direction: Vector3):
 		target_position = new_position
 		is_moving = true
 		GameManager.update_player_position(target_position)
+	else:
+		print("DEBUG: Movimento bloqueado!")
 
 func can_move_to(pos: Vector3) -> bool:
-	# Verificar colisões
-	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(global_position, pos)
-	query.collision_mask = 4  # Wall layer
-	var result = space_state.intersect_ray(query)
+	# Verificar se a posição está dentro dos limites básicos do mundo
+	if pos.x < -10 or pos.x > 20 or pos.z < -10 or pos.z > 20:
+		return false
 	
-	return result.is_empty()
+	# Tentar obter referência ao grid para verificar colisões
+	var grid_node = get_node_or_null("../Grid")
+	if grid_node and grid_node.has_method("is_wall"):
+		var grid_pos = grid_node.get_grid_position(pos)
+		if grid_node.is_wall(grid_pos):
+			print("DEBUG: Movimento bloqueado por parede no grid: ", grid_pos)
+			return false
+	
+	# Verificar colisões usando raycast como backup
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(
+		global_position + Vector3(0, 0.5, 0),
+		pos + Vector3(0, 0.5, 0)
+	)
+	query.exclude = [self]
+	query.collision_mask = 1  # Apenas objetos na layer 1 (paredes)
+	
+	var result = space_state.intersect_ray(query)
+	if not result.is_empty():
+		print("DEBUG: Movimento bloqueado por colisão de raycast")
+		return false
+	
+	return true
 
 func turn(degrees: float):
 	target_rotation = rotation.y + deg_to_rad(degrees)
 	is_turning = true
-	
-	# Atualizar direção atual
-	var angle_rad = target_rotation
-	current_direction = Vector3(sin(angle_rad), 0, cos(angle_rad))
 
 func handle_movement(delta: float):
 	if not is_moving:
@@ -102,8 +145,12 @@ func handle_turning(delta: float):
 	if abs(diff) < turn_amount:
 		rotation.y = target_rotation
 		is_turning = false
+		# Atualizar direção atual após completar a rotação
+		update_current_direction()
 	else:
 		rotation.y += sign(diff) * turn_amount
+		# Atualizar direção atual durante a rotação
+		update_current_direction()
 
 func interact_with_object():
 	# Procurar por objetos interagíveis próximos

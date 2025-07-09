@@ -1,133 +1,93 @@
 extends Node3D
 
-# Referências
-@onready var cells = $Cells
-@onready var walls = $Walls
-@onready var doors = $Doors
-@onready var interactables = $Interactables
+@export var grid_size: float = 2.0  # Tamanho de cada célula do grid
+@export var map_size: Vector2i = Vector2i(10, 10)  # Tamanho do mapa em células
 
-# Variáveis
-var grid_data = {}
-var grid_size = Vector2i.ZERO
-var start_cell = Vector2i.ZERO
-var cell_size = 2.0
-var cell_interactions = {}
+# Tipos de células
+enum CellType {
+	FLOOR,
+	WALL
+}
 
-func setup_grid(data: Dictionary):
-	# Salvar dados do grid
-	grid_data = data
-	grid_size = Vector2i(data.get("width", 0), data.get("height", 0))
-	start_cell = Vector2i(data.get("start_x", 0), data.get("start_y", 0))
+var grid: Array[Array] = []
+var wall_scene: PackedScene
+var floor_scene: PackedScene
+
+func _ready():
+	# Carrega as cenas das paredes e chão
+	wall_scene = load("res://Wall.tscn")
+	floor_scene = load("res://Floor.tscn")
 	
-	# Limpar grid
-	clear_grid()
-	
-	# Construir grid
-	build_grid()
+	initialize_grid()
+	create_dungeon()
+	instantiate_dungeon()
 
-func clear_grid():
-	# Limpar nós
-	for child in cells.get_children():
+func initialize_grid():
+	# Inicializa o grid com chão
+	grid.clear()
+	for x in range(map_size.x):
+		var column: Array = []
+		for y in range(map_size.y):
+			column.append(CellType.FLOOR)
+		grid.append(column)
+
+func create_dungeon():
+	# Cria paredes nas bordas
+	for x in range(map_size.x):
+		grid[x][0] = CellType.WALL
+		grid[x][map_size.y - 1] = CellType.WALL
+	
+	for y in range(map_size.y):
+		grid[0][y] = CellType.WALL
+		grid[map_size.x - 1][y] = CellType.WALL
+	
+	# Adiciona algumas paredes internas aleatórias
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	for x in range(1, map_size.x - 1):
+		for y in range(1, map_size.y - 1):
+			if rng.randf() < 0.2:  # 20% de chance de ser parede
+				grid[x][y] = CellType.WALL
+
+func instantiate_dungeon():
+	# Remove todos os nós filhos existentes
+	for child in get_children():
 		child.queue_free()
 	
-	for child in walls.get_children():
-		child.queue_free()
-	
-	for child in doors.get_children():
-		child.queue_free()
-	
-	for child in interactables.get_children():
-		child.queue_free()
-	
-	# Limpar dados
-	cell_interactions.clear()
+	# Instancia as paredes e o chão
+	for x in range(map_size.x):
+		for y in range(map_size.y):
+			var world_pos = get_world_position(Vector2(x, y))
+			
+			if grid[x][y] == CellType.WALL:
+				var wall = wall_scene.instantiate()
+				wall.position = world_pos
+				add_child(wall)
+			else:
+				var floor = floor_scene.instantiate()
+				floor.position = world_pos
+				add_child(floor)
 
-func build_grid():
-	# Construir células
-	build_cells()
-	
-	# Construir paredes
-	build_walls()
-	
-	# Construir portas
-	build_doors()
-	
-	# Construir interativos
-	build_interactables()
+func is_wall(grid_position: Vector2i) -> bool:
+	if grid_position.x < 0 or grid_position.x >= map_size.x or \
+	   grid_position.y < 0 or grid_position.y >= map_size.y:
+		return true
+	return grid[grid_position.x][grid_position.y] == CellType.WALL
 
-func build_cells():
-	# Criar células do grid
-	for x in range(grid_size.x):
-		for y in range(grid_size.y):
-			var cell = create_cell(Vector2i(x, y))
-			cells.add_child(cell)
+func get_world_position(grid_position: Vector2) -> Vector3:
+	return Vector3(grid_position.x * grid_size, 0, grid_position.y * grid_size)
 
-func build_walls():
-	# Criar paredes do grid
-	for wall_data in grid_data.get("walls", []):
-		var wall = create_wall(wall_data)
-		walls.add_child(wall)
+func get_grid_position(world_position: Vector3) -> Vector2i:
+	return Vector2i(
+		int(round(world_position.x / grid_size)),
+		int(round(world_position.z / grid_size))
+	)
 
-func build_doors():
-	# Criar portas do grid
-	for door_data in grid_data.get("doors", []):
-		var door = create_door(door_data)
-		doors.add_child(door)
+func get_start_position() -> Vector3:
+	# Retorna uma posição inicial válida para o jogador
+	return Vector3(2, 0, 2)
 
-func build_interactables():
-	# Criar interativos do grid
-	for interactable_data in grid_data.get("interactables", []):
-		var interactable = create_interactable(interactable_data)
-		interactables.add_child(interactable)
-		
-		# Adicionar interação
-		var cell = Vector2i(interactable_data.get("x", 0), interactable_data.get("y", 0))
-		if not cell_interactions.has(cell):
-			cell_interactions[cell] = []
-		cell_interactions[cell].append(interactable_data)
-
-func create_cell(pos: Vector2i) -> Node3D:
-	var cell = Node3D.new()
-	cell.name = "Cell_%d_%d" % [pos.x, pos.y]
-	cell.position = get_cell_position(pos)
-	return cell
-
-func create_wall(data: Dictionary) -> Node3D:
-	var wall = Node3D.new()
-	wall.name = "Wall_%d_%d" % [data.get("x", 0), data.get("y", 0)]
-	wall.position = get_cell_position(Vector2i(data.get("x", 0), data.get("y", 0)))
-	return wall
-
-func create_door(data: Dictionary) -> Node3D:
-	var door = Node3D.new()
-	door.name = "Door_%d_%d" % [data.get("x", 0), data.get("y", 0)]
-	door.position = get_cell_position(Vector2i(data.get("x", 0), data.get("y", 0)))
-	return door
-
-func create_interactable(data: Dictionary) -> Node3D:
-	var interactable = Node3D.new()
-	interactable.name = "Interactable_%d_%d" % [data.get("x", 0), data.get("y", 0)]
-	interactable.position = get_cell_position(Vector2i(data.get("x", 0), data.get("y", 0)))
-	return interactable
-
-func get_cell_position(cell: Vector2i) -> Vector3:
-	return Vector3(cell.x * cell_size, 0, cell.y * cell_size)
-
-func get_start_cell() -> Vector2i:
-	return start_cell
-
-func is_cell_walkable(cell: Vector2i) -> bool:
-	# Verificar se célula está dentro do grid
-	if cell.x < 0 or cell.x >= grid_size.x or cell.y < 0 or cell.y >= grid_size.y:
-		return false
-	
-	# Verificar se célula tem parede
-	for wall in walls.get_children():
-		var wall_pos = Vector2i(wall.position.x / cell_size, wall.position.z / cell_size)
-		if wall_pos == cell:
-			return false
-	
-	return true
-
-func get_cell_interactions(cell: Vector2i) -> Array:
-	return cell_interactions.get(cell, []) 
+func initialize():
+	# Método chamado externamente para inicializar o grid
+	_ready() 

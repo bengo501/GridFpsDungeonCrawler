@@ -14,6 +14,7 @@ signal puzzle_completed
 enum GameState {
     MAIN_MENU,
     PAUSED,
+    PAUSE_MENU,
     GAME_OVER,
     IN_BATTLE,
     EXPLORATION,

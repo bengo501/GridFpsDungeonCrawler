@@ -75,7 +75,7 @@ func _unhandled_input(event):
 	if not visible:
 		return
 	
-	if event.is_action_pressed("ui_accept") or event.is_action_pressed("interact"):
+	if event.is_action_pressed("ui_accept") or event.is_action_pressed("interacst"):
 		_next_line()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_cancel"):
